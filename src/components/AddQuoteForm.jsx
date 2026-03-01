@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 
 function AddQuoteForm({ saveQuote, editingQuote }) {
 
-  const [form, setForm] = useState({
+  const emptyForm = {
     id: null,
     customer: "",
     company: "",
@@ -11,29 +11,21 @@ function AddQuoteForm({ saveQuote, editingQuote }) {
     qty: "",
     price: "",
     status: "Draft"
-  });
+  };
+
+  const [form, setForm] = useState(emptyForm);
 
   useEffect(() => {
     if (editingQuote) setForm(editingQuote);
   }, [editingQuote]);
 
-  const handleChange = (e) =>
+  const handleChange = e =>
     setForm({ ...form, [e.target.name]: e.target.value });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = e => {
     e.preventDefault();
     saveQuote(form);
-
-    setForm({
-      id: null,
-      customer: "",
-      company: "",
-      brand: "SMC",
-      partNumber: "",
-      qty: "",
-      price: "",
-      status: "Draft"
-    });
+    setForm(emptyForm);
   };
 
   return (
@@ -57,15 +49,14 @@ function AddQuoteForm({ saveQuote, editingQuote }) {
       <select className="input"
         name="brand"
         value={form.brand}
-        onChange={handleChange}
-      >
+        onChange={handleChange}>
         <option>SMC</option>
         <option>Festo</option>
       </select>
 
       <input className="input"
         name="partNumber"
-        placeholder="Part Number (e.g. AMD70D-F10-B)"
+        placeholder="Part Number (AMD70D-F10-B)"
         value={form.partNumber}
         onChange={handleChange}
       />
@@ -89,15 +80,14 @@ function AddQuoteForm({ saveQuote, editingQuote }) {
       <select className="input"
         name="status"
         value={form.status}
-        onChange={handleChange}
-      >
+        onChange={handleChange}>
         <option>Draft</option>
         <option>Sent</option>
         <option>Won</option>
         <option>Lost</option>
       </select>
 
-      <button className="col-span-2 bg-blue-600 text-white p-2 rounded-lg hover:bg-blue-700">
+      <button className="col-span-2 bg-blue-600 text-white p-2 rounded-lg hover:bg-blue-700 transition">
         {editingQuote ? "Update Quote" : "Add Quote"}
       </button>
 
